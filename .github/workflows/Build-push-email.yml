@@ -1,4 +1,4 @@
-name: Build and Push and send Email
+name: Build and Push and send Emai
 on:
   push:
       branches: [ "main" ]
