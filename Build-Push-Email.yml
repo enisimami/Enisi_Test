@@ -1,8 +1,7 @@
-name: Build and Push Docker image
-
+name: Build and Push and send Email
 on:
   push:
-      branches: [ "test" ]
+      branches: [ "main" ]
   workflow_dispatch:
 
 jobs:
@@ -13,14 +12,14 @@ jobs:
       - name: Checkout out repository
         uses: actions/checkout@v2
 
-      - name: Login to DockerHub
+      - name: Login to Github
         run: |
-          echo "${{ secrets.DOCKERHUB_TOKEN }}" docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+          echo "${{ secrets.GH_TOKEN }}" github login -u "${{ secrets.GH_USERNAME }}" --password-stdin
       
       - name: Build docker image
         run: |
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/test:latest .
+          docker build -t ${{ secrets.GH_USERNAME }}/test:latest .
           
       - name: Push docker image
         run: |
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/test:latest
+          docker push ${{ secrets.GH_USERNAME }}/test:latest
