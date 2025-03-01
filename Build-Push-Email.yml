@@ -1,0 +1,24 @@
+name: Build node-js
+
+on: 
+  push:
+    branches: [ "test" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup node-version
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Install dependecies
+        run: npm install
+
+      - name: Build application
+        run: npm run build
