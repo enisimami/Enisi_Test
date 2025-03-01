@@ -18,7 +18,7 @@ jobs:
       
       - name: Build docker image
         run: |
-          docker build -t ${{ secrets.GH_USERNAME }}/test:latest .
+          docker build . --tag ghcr.io/mert2m/actions-runner-controller:latest
           
       - name: Push docker image
         run: |
