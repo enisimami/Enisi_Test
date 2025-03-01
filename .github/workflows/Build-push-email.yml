@@ -18,8 +18,8 @@ jobs:
       
       - name: Build docker image
         run: |
-          docker build . --tag ghcr.io/mert2m/actions-runner-controller:latest
+          docker build . --tag ghcr.io/enisimami/actions-runner-controller:latest
           
       - name: Push docker image
         run: |
-          docker push ghcr.io/mert2m/actions-runner-controller-ghcr:latest
+          docker push ghcr.io/enisimami/actions-runner-controller-ghcr:latest
