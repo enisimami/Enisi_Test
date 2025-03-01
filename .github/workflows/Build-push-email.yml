@@ -1,0 +1,25 @@
+name: Build and Push and send Email
+on:
+  push:
+      branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout out repository
+        uses: actions/checkout@v2
+
+      - name: Login to Github
+        run: |
+          echo "${{ secrets.GH_TOKEN }}" github login -u "${{ secrets.GH_USERNAME }}" --password-stdin
+      
+      - name: Build docker image
+        run: |
+          docker build -t ${{ secrets.GH_USERNAME }}/test:latest .
+          
+      - name: Push docker image
+        run: |
+          docker push ${{ secrets.GH_USERNAME }}/test:latest
