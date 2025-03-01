@@ -1,24 +1,26 @@
-name: Build node-js
+name: Build and Push Docker image
 
-on: 
+on:
   push:
-    branches: [ "test" ]
+      branches: [ "test" ]
+  workflow_dispatch:
 
 jobs:
-  build:
+  build-and-push:
     runs-on: ubuntu-latest
-    
+
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - name: Checkout out repository
+        uses: actions/checkout@v2
 
-      - name: Setup node-version
-        uses: actions/setup-node@v3
-        with:
-          node-version: '16'
-
-      - name: Install dependecies
-        run: npm install
-
-      - name: Build application
-        run: npm run build
+      - name: Login to DockerHub
+        run: |
+          echo "${{ secrets.DOCKERHUB_TOKEN }}" docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+      
+      - name: Build docker image
+        run: |
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/test:latest .
+          
+      - name: Push docker image
+        run: |
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/test:latest
