@@ -22,4 +22,4 @@ jobs:
           
       - name: Push docker image
         run: |
-          docker push ${{ secrets.GH_TOKEN }}/test:latest
+          docker push ${{ secrets.GH_USERNAME }}/test:latest
