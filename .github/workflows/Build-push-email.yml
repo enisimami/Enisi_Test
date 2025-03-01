@@ -1,4 +1,4 @@
-name: Build and Push and send Emai
+name: Build and Push and send Email
 on:
   push:
       branches: [ "main" ]
@@ -22,4 +22,4 @@ jobs:
           
       - name: Push docker image
         run: |
-          docker push ${{ secrets.GH_USERNAME }}/test:latest
+          docker push ${{ secrets.GH_TOKEN }}/test:latest
