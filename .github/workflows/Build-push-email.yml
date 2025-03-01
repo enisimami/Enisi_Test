@@ -22,4 +22,4 @@ jobs:
           
       - name: Push docker image
         run: |
-          docker push docker push ghcr.io/mert2m/actions-runner-controller-ghcr:latest
+          docker push ghcr.io/mert2m/actions-runner-controller-ghcr:latest
