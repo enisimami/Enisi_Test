@@ -19,10 +19,8 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build . -t ghcr.io/${{ secrets.GH_USERNAME }}/actions-runner-controller:latest
+          docker build . -t ghcr.io/${{ secrets.GH_USERNAME }}/enisi_test:latest
 
       - name: Push Docker image
         run: |
-          docker push ghcr.io/${{ secrets.GH_USERNAME }}/actions-runner-controller:latest
-
-
+          docker push ghcr.io/${{ secrets.GH_USERNAME }}/enisi_test:latest
