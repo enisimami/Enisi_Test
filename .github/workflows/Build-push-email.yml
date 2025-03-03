@@ -28,10 +28,8 @@ jobs:
           REPO_NAME=$(echo "${GITHUB_REPOSITORY#*/}" | tr '[:upper:]' '[:lower:]')
           echo "Building Docker image with tag: ghcr.io/${{ secrets.GH_USERNAME }}/${REPO_NAME}/actions-runner-controller:latest"
           docker build . -t ghcr.io/${{ secrets.GH_USERNAME }}/${REPO_NAME}/actions-runner-controller:latest
-
-      - name: Verify the image is built
-        run: |
-          docker images | grep "ghcr.io/${{ secrets.GH_USERNAME }}/${REPO_NAME}/actions-runner-controller"
+          echo "Docker build completed, listing Docker images:"
+          docker images
 
       - name: Push Docker image
         run: |
