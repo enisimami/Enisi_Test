@@ -13,14 +13,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Set repository name to lowercase
+        run: echo "REPO_NAME=$(echo ${GITHUB_REPOSITORY} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+
       - name: Login to GitHub Container Registry
         run: |
           echo "${{ secrets.GH_TOKEN }}" | docker login ghcr.io -u "${{ secrets.GH_USERNAME }}" --password-stdin
 
       - name: Build Docker image
         run: |
-          docker build . -t ghcr.io/${{ secrets.GH_USERNAME }}/Enisi_Test/enisi_test:latest
+          docker build . -t ghcr.io/${{ secrets.GH_USERNAME }}/${{ env.REPO_NAME }}/actions-runner-controller:latest
 
       - name: Push Docker image
         run: |
-          docker push ghcr.io/${{ secrets.GH_USERNAME }}/Enisi_Test/enisi_test:latest
+          docker push ghcr.io/${{ secrets.GH_USERNAME }}/${{ env.REPO_NAME }}/actions-runner-controller:latest
