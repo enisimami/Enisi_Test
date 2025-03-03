@@ -27,7 +27,7 @@ jobs:
 
       - name: Associate Image with Repository
         run: |
-          curl -X PATCH https://api.github.com/repos/${{ secrets.GH_USERNAME }}/Enisi_Test/packages/container/enisi_test \
+          curl -X PUT https://api.github.com/repos/${{ secrets.GH_USERNAME }}/Enisi_Test/packages/container/enisi_test \
           -H "Authorization: token ${{ secrets.GH_TOKEN }}" \
           -H "Accept: application/vnd.github.v3+json" \
-          -d '{"owner": "${{ secrets.GH_USERNAME }}", "repository": "Enisi_Test"}'
+          -d '{"repository": "Enisi_Test"}'
