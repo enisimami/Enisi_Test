@@ -17,13 +17,28 @@ jobs:
         run: |
           echo "${{ secrets.GH_TOKEN }}" | docker login ghcr.io -u "${{ secrets.GH_USERNAME }}" --password-stdin
 
+      - name: Show environment variables
+        run: |
+          echo "Repository: ${GITHUB_REPOSITORY}"
+          echo "Username: ${{ secrets.GH_USERNAME }}"
+          echo "Repo Name: ${GITHUB_REPOSITORY#*/}"
+
       - name: Build Docker image
         run: |
-          # Lowercase the repo name
           REPO_NAME=$(echo "${GITHUB_REPOSITORY#*/}" | tr '[:upper:]' '[:lower:]')
+          echo "Building Docker image with tag: ghcr.io/${{ secrets.GH_USERNAME }}/${REPO_NAME}/actions-runner-controller:latest"
           docker build . -t ghcr.io/${{ secrets.GH_USERNAME }}/${REPO_NAME}/actions-runner-controller:latest
+
+      - name: Verify the image is built
+        run: |
+          docker images | grep "ghcr.io/${{ secrets.GH_USERNAME }}/${REPO_NAME}/actions-runner-controller"
 
       - name: Push Docker image
         run: |
           REPO_NAME=$(echo "${GITHUB_REPOSITORY#*/}" | tr '[:upper:]' '[:lower:]')
+          echo "Pushing Docker image to: ghcr.io/${{ secrets.GH_USERNAME }}/${REPO_NAME}/actions-runner-controller:latest"
           docker push ghcr.io/${{ secrets.GH_USERNAME }}/${REPO_NAME}/actions-runner-controller:latest
+
+      - name: Check if the image exists in GitHub Packages
+        run: |
+          curl -u "${{ secrets.GH_USERNAME }}:${{ secrets.GH_TOKEN }}" https://ghcr.io/v2/${{ secrets.GH_USERNAME }}/enisi_test/tags/list
