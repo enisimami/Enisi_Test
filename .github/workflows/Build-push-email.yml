@@ -19,16 +19,8 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build . -t ghcr.io/${{ secrets.GH_USERNAME }}/enisi_test/enisi_test:latest
+          docker build . -t ghcr.io/${{ secrets.GH_USERNAME }}/Enisi_Test/enisi_test:latest
 
       - name: Push Docker image
         run: |
-          docker push ghcr.io/${{ secrets.GH_USERNAME }}/enisi_test/enisi_test:latest
-
-      - name: Set package visibility to public
-        run: |
-          PACKAGE_NAME="enisi_test/enisi_test"
-          curl -X PATCH "https://api.github.com/users/${{ secrets.GH_USERNAME }}/packages/container/$PACKAGE_NAME/visibility" \
-            -H "Authorization: token ${{ secrets.GH_TOKEN }}" \
-            -H "Accept: application/vnd.github.v3+json" \
-            -d '{"visibility":"public"}'
+          docker push ghcr.io/${{ secrets.GH_USERNAME }}/Enisi_Test/enisi_test:latest
