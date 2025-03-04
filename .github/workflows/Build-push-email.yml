@@ -1,4 +1,4 @@
-name: Build and Push
+name: Build and Push Docker Image
 
 on:
   push:
@@ -13,30 +13,19 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Login to GitHub Container Registry
-        run: |
-          echo "${{ secrets.GH_TOKEN }}" | docker login ghcr.io -u "${{ secrets.GH_USERNAME }}" --password-stdin
-
-      - name: Show environment variables
-        run: |
-          echo "Repository: ${GITHUB_REPOSITORY}"
-          echo "Username: ${{ secrets.GH_USERNAME }}"
-          echo "Repo Name: ${GITHUB_REPOSITORY#*/}"
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ secrets.GH_USERNAME }}
+          password: ${{ secrets.GH_TOKEN }}
 
       - name: Build Docker image
         run: |
           REPO_NAME=$(echo "${GITHUB_REPOSITORY#*/}" | tr '[:upper:]' '[:lower:]')
-          echo "Building Docker image with tag: ghcr.io/${{ secrets.GH_USERNAME }}/${REPO_NAME}/actions-runner-controller:latest"
-          docker build . -t ghcr.io/${{ secrets.GH_USERNAME }}/${REPO_NAME}/actions-runner-controller:latest
-          echo "Docker build completed, listing Docker images:"
-          docker images
+          docker build . -t ghcr.io/${{ secrets.GH_USERNAME }}/${REPO_NAME}:latest
 
       - name: Push Docker image
         run: |
           REPO_NAME=$(echo "${GITHUB_REPOSITORY#*/}" | tr '[:upper:]' '[:lower:]')
-          echo "Pushing Docker image to: ghcr.io/${{ secrets.GH_USERNAME }}/${REPO_NAME}/actions-runner-controller:latest"
-          docker push ghcr.io/${{ secrets.GH_USERNAME }}/${REPO_NAME}/actions-runner-controller:latest
-
-      - name: Check if the image exists in GitHub Packages
-        run: |
-          curl -u "${{ secrets.GH_USERNAME }}:${{ secrets.GH_TOKEN }}" https://ghcr.io/v2/${{ secrets.GH_USERNAME }}/enisi_test/tags/list
+          docker push ghcr.io/${{ secrets.GH_USERNAME }}/${REPO_NAME}:latest
